@@ -21,11 +21,15 @@ body{
     width: 100%;
 }
 
+
 #cart {
     width: 40%;
     padding: 10px;
 }
-
+.modal{
+    width: 100%;
+    border: 1px solid red;
+}
 #part1 {
     width: 70%;
     /* border: 1px solid; */
@@ -48,6 +52,11 @@ position: unset;
 text-align: center;
 display: flex;
 
+}
+
+#completed img{
+    display: flex !important;
+    margin: 0 auto;
 }
 #Confirm{
     display: none;
@@ -155,6 +164,27 @@ flex-direction: column;
 }
 #count{
     float: unset;
+}
+#modal, #completed{
+    position: absolute;
+    left:   50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid green;
+    background-color:  white;
+    width: 40% !important;
+    padding: 30px !important;
+    text-align: center;
+    border-radius: 10px;
+    border: none !important;
+    box-shadow: 1px 1px 10px 1px;
+    display: none;
+}
+#modal button, #completed button{
+    position: unset !important;
+    width: 30%;
+    display: inline-block;
+    margin: 30px auto !important;
 }
 
 @media screen and (max-width:600px) {
