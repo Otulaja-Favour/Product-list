@@ -69,7 +69,7 @@ h1{
     padding: 10px;
 }
 #image:hover{
-    border: 2px solid red;
+    border: 1px solid red;
 }
 #carted{
     background-color: #C83B0E;
