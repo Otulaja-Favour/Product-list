@@ -9,6 +9,9 @@ async function retrievingData() {
     console.log(result);
 
     result.forEach(element => {
+
+
+
       let cartprice = 1;
       let cartData = document.createElement('div');
       cartData.classList.add('cart');
@@ -26,6 +29,10 @@ async function retrievingData() {
 
       part1.appendChild(cartData);
 
+
+
+
+
       let addData = cartData.querySelector('#add');
       let cartedData = cartData.querySelector('#carted');
       let perCountCart = document.createElement('div');
@@ -42,34 +49,51 @@ async function retrievingData() {
         cartData.style.display = 'block'
         cartedData.style.display = 'flex';
         span.textContent = cartprice;
+        document.getElementById('role').style.display = 'block';
 
+        setTimeout(() => {
+          document.getElementById('role').style.display = 'none';
+        }, 1000);
         document.getElementById('image1').style.display = 'none';
         document.getElementById('Confirm').style.display = 'block';
 
         cart[element.name] = {
           quantity: cartprice,
-          price: element.price
+          price: element.price,
         };
-        
-        perCountCart.innerHTML = `<h6>${element.name}</h6>
-          <p>${cartprice}x ${element.price.toFixed(2)}  $${(element.price * cartprice).toFixed(2)}<span id="but"><img src="./assets/images/icon-remove-item.svg" alt=""></span></p>`;
-          cartCount.innerText = getTotalItemsInCart();
-         updateOrderSummary()
 
+        perCountCart.innerHTML = `
+        <h6>${element.name}</h6>
+        <p>${cartprice}x ${element.price.toFixed(2)}  $${(element.price * cartprice).toFixed(2)}
+          <span class="remove-button" data-product="${element.name}">
+            <img src="./assets/images/icon-remove-item.svg" alt="">
+          </span>
+        </p>`;
 
-        document.querySelector('#but').addEventListener('click', () => {
+        cartCount.innerText = getTotalItemsInCart();
+        updateOrderSummary();
 
-          perCountCart.style.display = 'none'
+        // Find the remove button we just added
+        const removeButton = perCountCart.querySelector('.remove-button');
+
+        // Add the event listener directly to this specific button
+        removeButton.addEventListener('click', () => {
+          const productName = removeButton.getAttribute('data-product');
+          delete cart[productName];
+          perCountCart.style.display = 'none';
           addData.style.display = 'block';
-          cartData.style.display = 'none'
+          cartData.style.display = 'none';
+
           if (image1) {
             image1.style.display = Object.keys(cart).length === 0 ? 'block' : 'none';
+            // document.getElementById('Confirm').style.display = Object.keys(cart) === 0 ? 'none' : 'none'
           }
-          cartCount.innerText -=1;
 
-          
-          updateTotal()
-        })
+          cartCount.innerText = getTotalItemsInCart();
+          updateTotal();
+        });
+
+        updateTotal();
         updateTotal();
       });
 
@@ -87,7 +111,7 @@ async function retrievingData() {
         perCountCart.innerHTML = `<h6>${element.name}</h6>
           <p>${cartprice}x ${element.price.toFixed(2)}  $${(element.price * cartprice).toFixed(2)}<span id="but"><img src="./assets/images/icon-remove-item.svg" alt=""></span></p>`;
 
-         updateOrderSummary()
+        updateOrderSummary()
 
         // cartCount.innerText = getTotalItemsInCart();
         updateTotal();
@@ -134,34 +158,37 @@ async function retrievingData() {
       });
 
 
-      document.getElementById('addup').addEventListener('click', ()=>{
+
+      document.getElementById('addup').addEventListener('click', () => {
         document.getElementById('main-container').style.opacity = '0.2'
         document.getElementById('modal').style.opacity = '1.0'
-         document.getElementById('modal').style.display = 'block'
+        document.getElementById('modal').style.display = 'block'
+        document.getElementById('modalload').style.display = 'block'
       })
-      document.getElementById('no').addEventListener('click', ()=>{
+      document.getElementById('no').addEventListener('click', () => {
         document.getElementById('main-container').style.opacity = '1.0'
-       
-         document.getElementById('modal').style.display = 'none'
+
+        document.getElementById('modal').style.display = 'none'
       })
-      document.getElementById('yes').addEventListener('click', ()=>{
+      document.getElementById('yes').addEventListener('click', () => {
         document.getElementById('completed').style.display = 'block'
-          document.getElementById('modal').style.display = 'none'
-          document.getElementById('percount').style.opacity = '1.0'
+        document.getElementById('modal').style.display = 'none'
+        document.getElementById('percount').style.opacity = '1.0'
 
       })
-      document.getElementById('start').addEventListener('click', ()=>{
+      document.getElementById('start').addEventListener('click', () => {
         document.getElementById('completed').style.display = 'none'
-         document.getElementById('main-container').style.opacity = '1.0'
-         perCountCart.innerHTML = '';
-         document.getElementById('count').innerText = 0
-         document.getElementById('Confirm').style.display = 'none';
-          image1.style.display = 'block' 
-          addData.style.display = 'block';
-          cartedData.style.display = 'none';
+        document.getElementById('main-container').style.opacity = '1.0'
 
-         
+
+        // cartData.style.pointerEvents= 'none';
+        location.reload()
+
+
       })
+
+
+
 
       document.getElementById('percount').appendChild(perCountCart);
     });
@@ -169,6 +196,10 @@ async function retrievingData() {
     console.error(`error`, error);
   }
 }
+
+
+
+
 
 //for the total items to be calculated together
 function updateTotal() {
@@ -188,19 +219,27 @@ function getTotalItemsInCart() {
   return totalItems;
 }
 
+//fot confirmation page
 function updateOrderSummary() {
   let order = document.getElementById('order');
-  order.innerHTML = ''; // clear old content
+  order.innerHTML = ''; // Clear old content
 
   for (let item in cart) {
     let product = cart[item];
     let div = document.createElement('div');
-    div.innerHTML = `<h6>${item}</h6>
-      <p>${product.quantity}x $${product.price.toFixed(2)} = $${(product.quantity * product.price).toFixed(2)}</p>`;
+    div.classList.add('carts')
+
+    div.innerHTML = `
+      <h6>${item}</h6>
+      <p>${product.quantity}x $${product.price.toFixed(2)} = $${(product.quantity * product.price).toFixed(2)}</p>
+    `;
+
     order.appendChild(div);
   }
 }
 
 
+
 retrievingData();
 // document.getElementById('count').innerText = getTotalItemsInCart();
+
